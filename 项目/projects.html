@@ -3,8 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FUZER-合作平台 - 项目</title>
+    <title>FUZER-合作平台 - 项目管理</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 项目页面特有样式 */
+        .project-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+        }
+        .project-item img {
+            width: 100px;
+            height: 100px;
+            margin-right: 10px;
+            border-radius: 8px;
+        }
+        .project-details {
+            flex-grow: 1;
+        }
+        .project-item button {
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -12,7 +36,7 @@
         <nav>
             <ul>
                 <li><a href="main.html">首页</a></li>
-                <li><a href="projects.html">项目</a></li> <!-- 当前页面 -->
+                <li><a href="projects.html">项目</a></li>
                 <li><a href="friends.html">好友</a></li>
                 <li><a href="mine.html">我的</a></li>
             </ul>
@@ -20,58 +44,36 @@
     </header>
 
     <main>
-        <section id="my-projects">
+        <section id="projects">
             <h2>我的项目</h2>
-            <div class="project-item">
-                <h3>项目名称 A</h3>
-                <p>状态: 进行中</p>
-                <button>查看详情</button>
-                <button>退出项目</button>
-            </div>
-            <div class="project-item">
-                <h3>项目名称 B</h3>
-                <p>状态: 招募中</p>
-                <button>查看详情</button>
-                <button>退出项目</button>
-            </div>
-            <!-- 更多项目项可以动态添加 -->
-        </section>
 
-        <section id="new-project">
-            <h2>发布新项目</h2>
-            <form id="new-project-form">
-                <label for="project-name">项目名称:</label>
-                <input type="text" id="project-name" required>
-                
-                <label for="project-status">项目状态:</label>
-                <select id="project-status">
-                    <option value="招募中">招募中</option>
-                    <option value="进行中">进行中</option>
-                </select>
+            <!-- 示例项目 -->
+            <div class="project-item">
+                <img src="images/project1.jpg" alt="项目图片">
+                <div class="project-details">
+                    <h3>项目名称 A</h3>
+                    <p>这是一个示例项目的简短描述。</p>
+                </div>
+                <button onclick="location.href='project-details.html'">查看详情</button>
+            </div>
 
-                <button type="submit">发布项目</button>
-            </form>
+            <div class="project-item">
+                <img src="images/project2.jpg" alt="项目图片">
+                <div class="project-details">
+                    <h3>项目名称 B</h3>
+                    <p>这是另一个示例项目的简短描述。</p>
+                </div>
+                <button onclick="location.href='project-details.html'">查看详情</button>
+            </div>
+
+            <!-- 新建项目按钮 -->
+            <button onclick="location.href='create-project.html'">发布新项目</button>
+
         </section>
     </main>
 
     <footer>
         <p>&copy; 2024 FUZER-合作平台</p>
     </footer>
-
-    <script>
-        // 发布新项目逻辑
-        document.getElementById('new-project-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const projectName = document.getElementById('project-name').value;
-            const projectStatus = document.getElementById('project-status').value;
-
-            // 动态添加新项目
-            const projectList = document.getElementById('my-projects');
-            const newProject = document.createElement('div');
-            newProject.classList.add('project-item');
-            newProject.innerHTML = `<h3>${projectName}</h3><p>状态: ${projectStatus}</p><button>查看详情</button><button>退出项目</button>`;
-            projectList.appendChild(newProject);
-        });
-    </script>
 </body>
 </html>
