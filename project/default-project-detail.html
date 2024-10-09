@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FUZER-合作平台 - 项目详情</title>
+    <title>FUZER-合作平台 - 默认项目详情</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -28,6 +28,7 @@
             <p>项目类型: <span id="project-type"></span></p>
             <button id="delete-project-button">删除项目</button>
             <button id="edit-project-button">编辑项目</button>
+            <button id="join-project-button">加入项目</button>
         </div>
 
         <div id="edit-form" style="display: none;">
@@ -62,7 +63,7 @@
         const projectId = decodeURIComponent(params.get('id')); // 解码项目 ID
 
         // 获取项目详情
-        fetch(`http://localhost:5000/api/projects/${projectId}`)
+        fetch(`http://localhost:5000/api/projects/${projectId}`) // 确保使用正确的路径
             .then(response => {
                 if (!response.ok) {
                     throw new Error('网络响应不正常');
@@ -80,6 +81,31 @@
                 document.getElementById('edit-project-image').value = project.image;
                 document.getElementById('edit-project-description').value = project.description;
                 document.getElementById('edit-project-type').value = project.type;
+
+                // 检查用户是否已加入此项目
+                const currentUserId = sessionStorage.getItem('currentUserId'); // 假设当前用户的 ID 存在于 sessionStorage 中
+
+                fetch(`http://localhost:5000/api/users/${currentUserId}/projects`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('网络响应不正常');
+                        }
+                        return response.json();
+                    })
+                    .then(user => {
+                        const isJoined = user.joinedProjects.includes(projectId); // 检查是否已加入项目
+                        if (isJoined) {
+                            document.getElementById('join-project-button').textContent = '已加入';
+                            document.getElementById('join-project-button').disabled = true; // 禁用加入按钮
+                            document.getElementById('delete-project-button').style.display = 'inline'; // 显示删除项目按钮
+                        } else {
+                            document.getElementById('join-project-button').textContent = '加入项目';
+                            document.getElementById('delete-project-button').style.display = 'none'; // 隐藏删除项目按钮
+                        }
+                    })
+                    .catch(err => {
+                        console.error('获取用户信息出错:', err);
+                    });
             })
             .catch(err => {
                 console.error('获取项目详情出错:', err);

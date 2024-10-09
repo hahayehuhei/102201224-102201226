@@ -1,11 +1,11 @@
-// server.js
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const projectRoutes = require('./routes/projectRoutes'); // 确保路径正确
+const User = require('./models/User'); // 引入用户模型
 
 const app = express();
 
@@ -14,19 +14,15 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB 连接
-mongoose.connect('mongodb://localhost:27017/project_manager')
-    .then(() => console.log('已连接到 MongoDB 数据库'))
-    .catch(err => console.log(err));
+mongoose.connect('mongodb://localhost:27017/project_manager', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => console.log('已连接到 MongoDB'))
+.catch(err => console.error('MongoDB 连接失败:', err));
 
-// 用户模型
-const UserSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    studentId: { type: String, required: true },
-    password: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-});
-
-const User = mongoose.model('User', UserSchema);
+// 使用项目路由
+app.use('/api', projectRoutes); // 确保这里的路径是正确的
 
 // 注册
 app.post('/api/register', async (req, res) => {
@@ -43,7 +39,6 @@ app.post('/api/register', async (req, res) => {
     await newUser.save();
     res.status(201).send('用户注册成功');
 });
-
 
 // 登录
 app.post('/api/login', async (req, res) => {
@@ -70,8 +65,6 @@ app.post('/api/reset-password', async (req, res) => {
         res.status(404).send('用户未找到');
     }
 });
-
-
 
 // 监听端口
 const PORT = process.env.PORT || 5000;

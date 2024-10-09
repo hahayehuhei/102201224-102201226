@@ -51,7 +51,7 @@
 
         <section id="project-list">
             <h2>项目列表</h2>
-            <!-- 通过JavaScript动态加载项目 -->
+            <!-- 通过JavaScript动态加载用户添加的项目 -->
         </section>
     </main>
 
@@ -62,20 +62,37 @@
     <script>
         // 获取所有项目并显示在页面上
         document.addEventListener('DOMContentLoaded', function() {
+            // 从本地存储中获取用户项目
+            const userProjects = JSON.parse(localStorage.getItem('userProjects')) || []; 
+
+            // 获取所有项目
             fetch('http://localhost:5000/api/projects')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('网络响应不正常');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     const projectList = document.getElementById('project-list');
+                    projectList.innerHTML = ''; // 清空项目列表，避免重复显示
                     data.forEach(project => {
                         const projectItem = document.createElement('div');
                         projectItem.classList.add('project-item');
+
+                        // 创建项目项
                         projectItem.innerHTML = `
                             <img src="${project.image}" alt="项目图片">
                             <span>${project.name}: ${project.description}</span>
                             <button onclick="location.href='project-detail.html?id=${project._id}'">查看详情</button>
+                            <button disabled>已加入</button> <!-- 显示已加入按钮并禁用 -->
                         `;
+
                         projectList.appendChild(projectItem);
                     });
+                })
+                .catch(err => {
+                    console.error('获取项目出错:', err);
                 });
         });
     </script>
