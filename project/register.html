@@ -11,13 +11,6 @@
             margin-bottom: 340px; /* 调整此值以增加或减少留白 */
         }
     </style>
-    <script>
-        function handleRegister() {
-            // 这里可以添加表单验证逻辑
-            // 跳转到登录页面
-            window.location.href = "login.html";
-        }
-    </script>
 </head>
 <body>
     <header>
@@ -34,23 +27,18 @@
     <main>
         <section id="register">
             <h2>注册</h2>
-            <form onsubmit="event.preventDefault(); handleRegister();"> <!-- 阻止默认提交 -->
+            <form id="register-form" onsubmit="event.preventDefault(); handleRegister();"> <!-- 阻止默认提交 -->
                 <label for="new-username">用户名:</label>
                 <input type="text" id="new-username" required>
                 
                 <label for="student-id">工学号:</label>
-                <input type="text" id="student-id" required> <!-- 添加工学号输入框 -->
+                <input type="text" id="student-id" required>
                 
                 <label for="new-password">密码:</label>
                 <input type="password" id="new-password" required>
                 
                 <label for="email">邮箱:</label>
-                <input type="email" id="email" required> <!-- 添加邮箱输入框 -->
-                
-                <label for="email-verification">邮箱验证码:</label>
-                <input type="text" id="email-verification" required> <!-- 添加邮箱验证码输入框 -->
-                
-                <button type="button" id="send-verification">发送验证码</button> <!-- 添加发送验证码按钮 -->
+                <input type="email" id="email" required>
                 
                 <button type="submit">注册</button> <!-- 点击后调用handleRegister函数 -->
             </form>
@@ -60,5 +48,29 @@
     <footer>
         <p>&copy; 2024 FUZER-合作平台</p>
     </footer>
+
+    <script>
+        async function handleRegister() {
+            const username = document.getElementById('new-username').value;
+            const studentId = document.getElementById('student-id').value;
+            const password = document.getElementById('new-password').value;
+            const email = document.getElementById('email').value;
+
+            const response = await fetch('http://localhost:5000/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, studentId, password, email }),
+            });
+
+            if (response.ok) {
+                alert('注册成功！');
+                window.location.href = 'login.html'; // 注册成功后跳转到登录页面
+            } else {
+                alert('注册失败，请重试。');
+            }
+        }
+    </script>
 </body>
 </html>
