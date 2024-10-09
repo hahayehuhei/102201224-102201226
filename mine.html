@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUZER-合作平台 - 我的</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>FUZER-合作平台</h1>
+        <nav>
+            <ul>
+                <li><a href="main.html">首页</a></li>
+                <li><a href="projects.html">项目</a></li> <!-- 新增项目链接 -->
+                <li><a href="friends.html">好友</a></li>
+                <li><a href="mine.html">我的</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="profile">
+            <h2>我的资料</h2>
+            <p id="username">昵称: </p>
+            <p id="email">邮箱: </p>
+            <button id="edit-profile-button" onclick="location.href='edit-profile.html'">编辑资料</button> <!-- 新增编辑资料按钮 -->
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 FUZER-合作平台</p>
+    </footer>
+
+    <script>
+        // 获取用户资料并显示在页面上
+        fetch('http://localhost:5000/api/profile', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}` // 使用JWT token
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('获取用户资料失败');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('username').textContent = `昵称: ${data.username}`;
+            document.getElementById('email').textContent = `邮箱: ${data.email}`;
+        })
+        .catch(err => {
+            console.error('获取用户资料失败:', err);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUZER-合作平台 - 私聊</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 聊天界面样式 */
+        #chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+            max-width: 600px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        #chat-header {
+            display: flex;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        #chat-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        #chat-box {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+
+        #message-input {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        #message-input input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #message-input button {
+            margin-left: 10px;
+            padding: 10px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>FUZER-合作平台</h1>
+        <nav>
+            <ul>
+                <li><a href="main.html">首页</a></li>
+                <li><a href="projects.html">项目</a></li>
+                <li><a href="friends.html">好友</a></li>
+                <li><a href="mine.html">我的</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div id="chat-container">
+            <div id="chat-header">
+                <!-- 通过 JavaScript 动态加载头像图片 -->
+                <img src="images/avatar1.jpg" alt="好友头像" id="friend-avatar">
+                <h3 id="friend-name">好友</h3>
+            </div>
+
+            <div id="chat-box">
+                <!-- 这里会显示聊天记录 -->
+            </div>
+
+            <div id="message-input">
+                <input type="text" id="chat-message" placeholder="输入消息">
+                <button onclick="sendMessage()">发送</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 FUZER-合作平台</p>
+    </footer>
+
+    <script>
+        // 获取好友名字并显示在顶部
+        const params = new URLSearchParams(window.location.search);
+        const friendName = params.get('friend');
+        if (friendName) {
+            document.getElementById('friend-name').textContent = friendName;
+
+            // 动态更改头像路径（这里根据好友名称选择不同的头像）
+            const avatarMap = {
+                '好友1': 'images/avatar1.jpg',
+                '好友2': 'images/avatar2.jpg'
+            };
+            document.getElementById('friend-avatar').src = avatarMap[friendName] || 'images/default-avatar.jpg';
+        }
+
+        function sendMessage() {
+            const message = document.getElementById('chat-message').value;
+            if (message.trim()) {
+                // 模拟发送消息
+                const chatBox = document.getElementById('chat-box');
+                const newMessage = document.createElement('div');
+                newMessage.textContent = "我: " + message;
+                chatBox.appendChild(newMessage);
+
+                // 清空输入框
+                document.getElementById('chat-message').value = '';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUZER-合作平台 - 登录</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 添加留白的样式 */
+        main {
+            margin-bottom: 340px; /* 调整此值以增加或减少留白 */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>FUZER-合作平台</h1>
+        <nav>
+            <ul>
+                <li><a href="login.html">登录</a></li>
+                <li><a href="register.html">注册</a></li>
+                <li><a href="forget.html">忘记密码</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="login">
+            <h2>登录</h2>
+            <form id="login-form" onsubmit="event.preventDefault(); handleLogin();"> <!-- 阻止默认提交 -->
+                <label for="username">用户名:</label>
+                <input type="text" id="username" required>
+                
+                <label for="password">密码:</label>
+                <input type="password" id="password" required>
+                
+                <button type="submit">登录</button> <!-- 点击后调用handleLogin函数 -->
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 FUZER-合作平台</p>
+    </footer>
+
+    <script>
+        async function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const response = await fetch('http://localhost:5000/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('token', data.token); // 存储 JWT 令牌
+                window.location.href = 'main.html'; // 登录成功后跳转到主页面
+            } else {
+                alert('用户名或密码错误');
+            }
+        }
+    </script>
+</body>
+</html>
