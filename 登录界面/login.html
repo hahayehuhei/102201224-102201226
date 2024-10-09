@@ -18,7 +18,7 @@
         <nav>
             <ul>
                 <li><a href="login.html">登录</a></li>
-                <li><a href="register.html">注册</a></li> <!-- 更新链接指向注册页面 -->
+                <li><a href="register.html">注册</a></li>
                 <li><a href="forget.html">忘记密码</a></li>
             </ul>
         </nav>
@@ -27,12 +27,12 @@
     <main>
         <section id="login">
             <h2>登录</h2>
-            <form>
+            <form action="main.html" method="post"> <!-- 设置表单的action属性 -->
                 <label for="username">用户名:</label>
                 <input type="text" id="username" required>
                 <label for="password">密码:</label>
                 <input type="password" id="password" required>
-                <button type="submit">登录</button>
+                <button type="submit">登录</button> <!-- 点击后将提交表单并跳转 -->
             </form>
         </section>
     </main>
