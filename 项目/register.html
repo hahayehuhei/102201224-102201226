@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUZER-合作平台 - 注册</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 添加留白的样式 */
+        main {
+            margin-bottom: 340px; /* 调整此值以增加或减少留白 */
+        }
+    </style>
+    <script>
+        function handleRegister() {
+            // 这里可以添加表单验证逻辑
+            // 跳转到登录页面
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>FUZER-合作平台</h1>
+        <nav>
+            <ul>
+                <li><a href="login.html">登录</a></li>
+                <li><a href="register.html">注册</a></li>
+                <li><a href="forget.html">忘记密码</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="register">
+            <h2>注册</h2>
+            <form onsubmit="event.preventDefault(); handleRegister();"> <!-- 阻止默认提交 -->
+                <label for="new-username">用户名:</label>
+                <input type="text" id="new-username" required>
+                
+                <label for="student-id">工学号:</label>
+                <input type="text" id="student-id" required> <!-- 添加工学号输入框 -->
+                
+                <label for="new-password">密码:</label>
+                <input type="password" id="new-password" required>
+                
+                <label for="email">邮箱:</label>
+                <input type="email" id="email" required> <!-- 添加邮箱输入框 -->
+                
+                <label for="email-verification">邮箱验证码:</label>
+                <input type="text" id="email-verification" required> <!-- 添加邮箱验证码输入框 -->
+                
+                <button type="button" id="send-verification">发送验证码</button> <!-- 添加发送验证码按钮 -->
+                
+                <button type="submit">注册</button> <!-- 点击后调用handleRegister函数 -->
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 FUZER-合作平台</p>
+    </footer>
+</body>
+</html>

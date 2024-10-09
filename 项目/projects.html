@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUZER-合作平台 - 项目</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>FUZER-合作平台</h1>
+        <nav>
+            <ul>
+                <li><a href="main.html">首页</a></li>
+                <li><a href="projects.html">项目</a></li> <!-- 当前页面 -->
+                <li><a href="friends.html">好友</a></li>
+                <li><a href="mine.html">我的</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="my-projects">
+            <h2>我的项目</h2>
+            <div class="project-item">
+                <h3>项目名称 A</h3>
+                <p>状态: 进行中</p>
+                <button>查看详情</button>
+                <button>退出项目</button>
+            </div>
+            <div class="project-item">
+                <h3>项目名称 B</h3>
+                <p>状态: 招募中</p>
+                <button>查看详情</button>
+                <button>退出项目</button>
+            </div>
+            <!-- 更多项目项可以动态添加 -->
+        </section>
+
+        <section id="new-project">
+            <h2>发布新项目</h2>
+            <form id="new-project-form">
+                <label for="project-name">项目名称:</label>
+                <input type="text" id="project-name" required>
+                
+                <label for="project-status">项目状态:</label>
+                <select id="project-status">
+                    <option value="招募中">招募中</option>
+                    <option value="进行中">进行中</option>
+                </select>
+
+                <button type="submit">发布项目</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 FUZER-合作平台</p>
+    </footer>
+
+    <script>
+        // 发布新项目逻辑
+        document.getElementById('new-project-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const projectName = document.getElementById('project-name').value;
+            const projectStatus = document.getElementById('project-status').value;
+
+            // 动态添加新项目
+            const projectList = document.getElementById('my-projects');
+            const newProject = document.createElement('div');
+            newProject.classList.add('project-item');
+            newProject.innerHTML = `<h3>${projectName}</h3><p>状态: ${projectStatus}</p><button>查看详情</button><button>退出项目</button>`;
+            projectList.appendChild(newProject);
+        });
+    </script>
+</body>
+</html>
