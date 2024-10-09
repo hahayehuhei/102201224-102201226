@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUZER-合作平台 - 发布新项目</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>FUZER-合作平台</h1>
+        <nav>
+            <ul>
+                <li><a href="main.html">首页</a></li>
+                <li><a href="projects.html">项目</a></li>
+                <li><a href="friends.html">好友</a></li>
+                <li><a href="mine.html">我的</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>发布新项目</h2>
+        <form id="publish-project-form">
+            <label for="project-name">项目名称:</label>
+            <input type="text" id="project-name" required>
+            
+            <label for="project-image">项目图片:</label>
+            <input type="text" id="project-image" placeholder="图片URL" required>
+            
+            <label for="project-description">项目描述:</label>
+            <textarea id="project-description" rows="4" required></textarea>
+            
+            <label for="project-type">项目类型:</label>
+            <select id="project-type" required>
+                <option value="类型1">类型1</option>
+                <option value="类型2">类型2</option>
+                <option value="类型3">类型3</option>
+            </select>
+
+            <button type="submit">提交项目</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 FUZER-合作平台</p>
+    </footer>
+
+    <script>
+        // 表单提交处理
+        document.getElementById('publish-project-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const projectName = document.getElementById('project-name').value;
+            const projectImage = document.getElementById('project-image').value;
+            const projectDescription = document.getElementById('project-description').value;
+            const projectType = document.getElementById('project-type').value;
+
+            const projectData = {
+                name: projectName,
+                image: projectImage,
+                description: projectDescription,
+                type: projectType
+            };
+
+            fetch('http://localhost:5000/api/projects', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(projectData)
+            })
+            .then(response => response.json())
+            .then(() => {
+                alert('项目发布成功！');
+                window.location.href = 'projects.html';
+            });
+        });
+    </script>
+</body>
+</html>

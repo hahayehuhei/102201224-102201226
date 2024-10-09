@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUZER-合作平台 - 项目</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 项目页面特有样式 */
+        #project-list {
+            margin-top: 20px;
+        }
+        .project-item {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+        }
+    </style>
+    <style>
+        /* 添加留白的样式 */
+        main {
+            margin-bottom: 280px; /* 调整此值以增加或减少留白 */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>FUZER-合作平台</h1>
+        <nav>
+            <ul>
+                <li><a href="login.html">首页</a></li>
+                <li><a href="projects.html">项目</a></li>
+                <li><a href="friends.html">好友</a></li>
+                <li><a href="mine.html">我的</a></li> <!-- 修改导航栏的“我的”按钮链接 -->
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="search-projects">
+            <h2>搜索项目</h2>
+            <input type="text" id="search-input" placeholder="输入项目名称进行搜索" />
+            <button id="search-button">搜索</button>
+        </section>
+
+        <section id="project-list">
+            <h2>项目列表</h2>
+            <div class="project-item">项目 1: 示例项目 A</div>
+            <div class="project-item">项目 2: 示例项目 B</div>
+            <div class="project-item">项目 3: 示例项目 C</div>
+            <!-- 更多项目可以在这里添加 -->
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 FUZER-合作平台</p>
+    </footer>
+
+    <script>
+        // 简单的搜索功能示例
+        document.getElementById('search-button').addEventListener('click', function() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const projects = document.querySelectorAll('.project-item');
+            projects.forEach(project => {
+                if (project.textContent.toLowerCase().includes(query)) {
+                    project.style.display = 'block';
+                } else {
+                    project.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUZER-合作平台 - 项目</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #project-list {
+            margin-top: 20px;
+        }
+        .project-item {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+        }
+        .project-item img {
+            max-width: 100px;
+            height: auto;
+            margin-right: 10px;
+        }
+        #publish-new-project {
+            float: right;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>FUZER-合作平台</h1>
+        <nav>
+            <ul>
+                <li><a href="main.html">首页</a></li>
+                <li><a href="projects.html">项目</a></li>
+                <li><a href="friends.html">好友</a></li>
+                <li><a href="mine.html">我的</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <button id="publish-new-project" onclick="location.href='publish-project.html'">发布新项目</button>
+
+        <section id="project-list">
+            <h2>项目列表</h2>
+            <!-- 通过JavaScript动态加载项目 -->
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 FUZER-合作平台</p>
+    </footer>
+
+    <script>
+        // 获取所有项目并显示在页面上
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('http://localhost:5000/api/projects')
+                .then(response => response.json())
+                .then(data => {
+                    const projectList = document.getElementById('project-list');
+                    data.forEach(project => {
+                        const projectItem = document.createElement('div');
+                        projectItem.classList.add('project-item');
+                        projectItem.innerHTML = `
+                            <img src="${project.image}" alt="项目图片">
+                            <span>${project.name}: ${project.description}</span>
+                            <button onclick="location.href='project-detail.html?id=${project._id}'">查看详情</button>
+                        `;
+                        projectList.appendChild(projectItem);
+                    });
+                });
+        });
+    </script>
+</body>
+</html>
