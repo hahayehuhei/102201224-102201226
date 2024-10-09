@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUZER-合作平台 - 默认项目详情</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>FUZER-合作平台</h1>
+        <nav>
+            <ul>
+                <li><a href="main.html">首页</a></li>
+                <li><a href="projects.html">项目</a></li>
+                <li><a href="friends.html">好友</a></li>
+                <li><a href="mine.html">我的</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>项目详情</h2>
+        <div id="project-details">
+            <img id="project-image" alt="项目图片" style="max-width: 200px;">
+            <h3 id="project-name"></h3>
+            <p id="project-description"></p>
+            <p>项目类型: <span id="project-type"></span></p>
+            <button id="delete-project-button">删除项目</button>
+            <button id="edit-project-button">编辑项目</button>
+            <button id="join-project-button">加入项目</button>
+        </div>
+
+        <div id="edit-form" style="display: none;">
+            <h3>更新项目</h3>
+            <form id="update-project-form">
+                <label for="edit-project-name">项目名称:</label>
+                <input type="text" id="edit-project-name" required>
+
+                <label for="edit-project-image">项目图片:</label>
+                <input type="text" id="edit-project-image" placeholder="图片URL" required>
+
+                <label for="edit-project-description">项目描述:</label>
+                <textarea id="edit-project-description" rows="4" required></textarea>
+
+                <label for="edit-project-type">项目类型:</label>
+                <select id="edit-project-type" required>
+                    <option value="学生自主研究">学生自主研究</option>
+                    <option value="教师指导学生研究">教师指导学生研究</option>
+                </select>
+
+                <button type="submit">更新项目</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 FUZER-合作平台</p>
+    </footer>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const projectId = decodeURIComponent(params.get('id')); // 解码项目 ID
+
+        // 获取项目详情
+        fetch(`http://localhost:5000/api/projects/${projectId}`) // 确保使用正确的路径
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('网络响应不正常');
+                }
+                return response.json();
+            })
+            .then(project => {
+                document.getElementById('project-name').textContent = project.name;
+                document.getElementById('project-image').src = project.image;
+                document.getElementById('project-description').textContent = project.description;
+                document.getElementById('project-type').textContent = project.type;
+
+                // 填充编辑表单
+                document.getElementById('edit-project-name').value = project.name;
+                document.getElementById('edit-project-image').value = project.image;
+                document.getElementById('edit-project-description').value = project.description;
+                document.getElementById('edit-project-type').value = project.type;
+
+                // 检查用户是否已加入此项目
+                const currentUserId = sessionStorage.getItem('currentUserId'); // 假设当前用户的 ID 存在于 sessionStorage 中
+
+                fetch(`http://localhost:5000/api/users/${currentUserId}/projects`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('网络响应不正常');
+                        }
+                        return response.json();
+                    })
+                    .then(user => {
+                        const isJoined = user.joinedProjects.includes(projectId); // 检查是否已加入项目
+                        if (isJoined) {
+                            document.getElementById('join-project-button').textContent = '已加入';
+                            document.getElementById('join-project-button').disabled = true; // 禁用加入按钮
+                            document.getElementById('delete-project-button').style.display = 'inline'; // 显示删除项目按钮
+                        } else {
+                            document.getElementById('join-project-button').textContent = '加入项目';
+                            document.getElementById('delete-project-button').style.display = 'none'; // 隐藏删除项目按钮
+                        }
+                    })
+                    .catch(err => {
+                        console.error('获取用户信息出错:', err);
+                    });
+            })
+            .catch(err => {
+                console.error('获取项目详情出错:', err);
+                alert('获取项目详情出错');
+            });
+
+        // 删除项目
+        document.getElementById('delete-project-button').addEventListener('click', function() {
+            fetch(`http://localhost:5000/api/projects/${projectId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('项目已删除');
+                    window.location.href = 'projects.html'; // 重定向回项目页面
+                } else {
+                    alert('删除项目失败');
+                }
+            })
+            .catch(err => {
+                console.error('删除项目出错:', err);
+                alert('删除项目出错');
+            });
+        });
+
+        // 显示编辑表单
+        document.getElementById('edit-project-button').addEventListener('click', function() {
+            document.getElementById('edit-form').style.display = 'block'; // 显示编辑表单
+        });
+
+        // 更新项目
+        document.getElementById('update-project-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const updatedProject = {
+                name: document.getElementById('edit-project-name').value,
+                image: document.getElementById('edit-project-image').value,
+                description: document.getElementById('edit-project-description').value,
+                type: document.getElementById('edit-project-type').value
+            };
+
+            fetch(`http://localhost:5000/api/projects/${projectId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedProject)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('项目更新成功');
+                    window.location.reload(); // 重新加载页面显示更新后的信息
+                } else {
+                    alert('更新项目失败');
+                }
+            })
+            .catch(err => {
+                console.error('更新项目出错:', err);
+                alert('更新项目出错');
+            });
+        });
+    </script>
+</body>
+</html>

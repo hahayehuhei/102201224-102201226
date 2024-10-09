@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布新项目</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>发布新项目</h1>
+    </header>
+
+    <main>
+        <form id="publish-project-form">
+            <label for="project-name">项目名称:</label>
+            <input type="text" id="project-name" required>
+
+            <label for="project-image">项目图片URL:</label>
+            <input type="text" id="project-image" required>
+
+            <label for="project-description">项目描述:</label>
+            <textarea id="project-description" required></textarea>
+
+            <label for="project-type">项目类型:</label>
+            <select id="project-type" required>
+                <option value="学生自主研究">学生自主研究</option>
+                <option value="教师指导学生研究">教师指导学生研究</option>
+            </select>
+
+            <button type="submit">发布项目</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 FUZER-合作平台</p>
+    </footer>
+
+    <script>
+        document.getElementById('publish-project-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const newProject = {
+                name: document.getElementById('project-name').value,
+                image: document.getElementById('project-image').value,
+                description: document.getElementById('project-description').value,
+                type: document.getElementById('project-type').value
+            };
+
+            // 发布新项目的 API 请求
+            fetch('http://localhost:5000/api/projects', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newProject)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('发布项目失败');
+                }
+            })
+            .then(project => {
+                // 更新用户的本地存储以包含新的项目
+                const userProjects = JSON.parse(localStorage.getItem('userProjects')) || [];
+                userProjects.push(project); // 将新项目添加到用户的项目列表
+                localStorage.setItem('userProjects', JSON.stringify(userProjects));
+
+                alert('项目发布成功！');
+                window.location.href = 'projects.html'; // 跳转到项目页面
+            })
+            .catch(err => {
+                console.error('发布项目出错:', err);
+                alert(err.message);
+            });
+        });
+    </script>
+</body>
+</html>
