@@ -14,12 +14,9 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB 连接
-mongoose.connect('mongodb://localhost:27017/project_manager', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('已连接到 MongoDB'))
-.catch(err => console.error('MongoDB 连接失败:', err));
+mongoose.connect('mongodb://localhost:27017/project_manager')
+    .then(() => console.log('已连接到 MongoDB'))
+    .catch(err => console.error('MongoDB 连接失败:', err));
 
 // JWT 验证中间件
 const authenticateToken = (req, res, next) => {
@@ -107,10 +104,11 @@ app.get('/api/profile', authenticateToken, async (req, res) => {
     }
 });
 
-
-
 // 监听端口
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`服务器正在端口 ${PORT} 运行`);
 });
+
+// 导出 app 实例以供测试使用
+module.exports = app; // 确保导出的是 app 实例

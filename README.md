@@ -35,4 +35,5 @@
 ├── register.html           // 注册页面
 └── edit-profile.html       // 编辑资料页面
 └── default-project-detail.html // 默认项目详情页面
+└── sum.test.js             //测试用例
 └── style.css               // 样式文件
