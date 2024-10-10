@@ -1,72 +1,79 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FUZER-合作平台 - 编辑资料</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <h1>FUZER-合作平台</h1>
-        <nav>
-            <ul>
-                <li><a href="main.html">首页</a></li>
-                <li><a href="projects.html">项目</a></li>
-                <li><a href="friends.html">好友</a></li>
-                <li><a href="mine.html">我的</a></li>
-            </ul>
-        </nav>
-    </header>
+<main>
+    <h2>编辑资料</h2>
+    <form id="edit-profile-form">
+        <label for="username">昵称:</label>
+        <input type="text" id="username" name="username" required>
 
-    <main>
-        <h2>编辑资料</h2>
-        <form id="edit-profile-form">
-            <label for="username">昵称:</label>
-            <input type="text" id="username" name="username" required>
+        <label for="email">邮箱:</label>
+        <input type="email" id="email" name="email" required>
 
-            <label for="email">邮箱:</label>
-            <input type="email" id="email" name="email" required>
+        <label for="major">专业:</label>
+        <input type="text" id="major" name="major">
 
-            <button type="submit">保存</button>
-        </form>
-    </main>
+        <label for="bio">个人简介:</label>
+        <textarea id="bio" name="bio"></textarea>
 
-    <footer>
-        <p>&copy; 2024 FUZER-合作平台</p>
-    </footer>
+        <label for="avatar">头像URL:</label>
+        <input type="text" id="avatar" name="avatar">
 
-    <script>
-       // 提交编辑资料表单
-document.getElementById('edit-profile-form').addEventListener('submit', function(event) {
-    event.preventDefault(); // 阻止表单默认提交
+        <button type="submit">保存</button>
+    </form>
+</main>
 
-    const username = document.getElementById('username').value;
-    const email = document.getElementById('email').value;
-
-    // 发送更新请求
-    fetch('http://localhost:5000/api/update-profile', {
-        method: 'PUT',
+<script>
+    // 获取用户现有资料并填入表单
+    fetch('http://localhost:5000/api/profile', {
+        method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}` // 如果使用了 JWT 令牌，添加令牌
-        },
-        body: JSON.stringify({ username, email }) // 发送新数据
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('资料更新成功');
-            window.location.href = 'mine.html'; // 更新后重定向回个人资料页面
-        } else {
-            alert('更新资料失败');
+            'Authorization': `Bearer ${localStorage.getItem('token')}` // 使用JWT token
         }
     })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('获取用户资料失败');
+        }
+        return response.json();
+    })
+    .then(data => {
+        document.getElementById('username').value = data.username;
+        document.getElementById('email').value = data.email;
+        document.getElementById('major').value = data.major || '';
+        document.getElementById('bio').value = data.bio || '';
+        document.getElementById('avatar').value = data.avatar || '';
+    })
     .catch(err => {
-        console.error('更新资料出错:', err);
-        alert('更新资料出错');
+        console.error('获取用户资料失败:', err);
     });
-});
 
-    </script>
-</body>
-</html>
+    // 提交编辑资料表单
+    document.getElementById('edit-profile-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const major = document.getElementById('major').value;
+        const bio = document.getElementById('bio').value;
+        const avatar = document.getElementById('avatar').value;
+
+        fetch('http://localhost:5000/api/update-profile', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({ username, email, major, bio, avatar })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('资料更新成功');
+                window.location.href = 'mine.html';
+            } else {
+                alert('更新资料失败');
+            }
+        })
+        .catch(err => {
+            console.error('更新资料出错:', err);
+            alert('更新资料出错');
+        });
+    });
+</script>

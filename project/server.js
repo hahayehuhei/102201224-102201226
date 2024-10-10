@@ -66,7 +66,7 @@ app.post('/api/login', async (req, res) => {
 
 // 更新用户资料
 app.put('/api/update-profile', authenticateToken, async (req, res) => {
-    const { username, email } = req.body;
+    const { username, email, major, bio, avatar } = req.body;
     const userId = req.userId; // 通过JWT中间件获取的用户ID
 
     try {
@@ -76,6 +76,9 @@ app.put('/api/update-profile', authenticateToken, async (req, res) => {
         // 更新用户信息
         user.username = username;
         user.email = email;
+        user.major = major;
+        user.bio = bio;
+        user.avatar = avatar;
         await user.save();
 
         res.send('资料更新成功');
@@ -83,24 +86,27 @@ app.put('/api/update-profile', authenticateToken, async (req, res) => {
         res.status(500).send('更新资料失败');
     }
 });
+
 // 获取用户资料
 app.get('/api/profile', authenticateToken, async (req, res) => {
-    const userId = req.userId; // 使用JWT中间件获取的用户ID
+    const userId = req.userId;
 
     try {
         const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: '用户未找到' }); // 返回JSON格式的错误消息
-        }
+        if (!user) return res.status(404).json({ message: '用户未找到' });
 
         res.json({
             username: user.username,
-            email: user.email
+            email: user.email,
+            major: user.major,
+            bio: user.bio,
+            avatar: user.avatar
         });
     } catch (err) {
-        res.status(500).json({ message: '获取用户资料失败' }); // 返回JSON格式的错误消息
+        res.status(500).json({ message: '获取用户资料失败' });
     }
 });
+
 
 
 // 监听端口

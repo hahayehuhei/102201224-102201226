@@ -5,6 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FUZER-合作平台 - 首页</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        #project-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .project-item {
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .project-item img {
+            max-width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .project-item h3 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .project-item p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .project-item button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .project-item button:disabled {
+            background-color: #ccc;
+        }
+        #search-bar, #filter-type {
+            margin: 20px 0;
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #filter-button {
+            padding: 10px;
+            margin-left: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -21,19 +83,59 @@
 
     <main>
         <h2>已有项目</h2>
+        <!-- 搜索栏 -->
+        <input type="text" id="search-bar" placeholder="搜索项目..." oninput="filterProjects()">
+        <!-- 类型过滤选择 -->
+        <select id="filter-type" onchange="filterProjects()">
+            <option value="">全部类型</option>
+            <option value="学生自主研究">学生自主研究</option>
+            <option value="教师指导学生研究">教师指导学生研究</option>
+        </select>
+        <button id="filter-button" onclick="filterProjects()">过滤</button>
+
         <div id="project-list">
-            <!-- 直接显示已有的两个项目 -->
+            <!-- 直接显示已有的六个项目 -->
             <div class="project-item" id="project1">
-                <img src="./images/project1.jpg" alt="项目图片" style="max-width: 100px;">
+                <img src="./images/project1.jpg" alt="项目图片">
                 <h3>高等数学研究</h3>
                 <p>对高等数学的深入研究，包括理论与应用。</p>
+                <p>类型: 学生自主研究</p>
                 <button onclick="joinProject('高等数学研究', './images/project1.jpg', '对高等数学的深入研究，包括理论与应用。', '学生自主研究', this)">加入项目</button>
             </div>
             <div class="project-item" id="project2">
-                <img src="./images/project2.jpg" alt="项目图片" style="max-width: 100px;">
+                <img src="./images/project2.jpg" alt="项目图片">
                 <h3>福大建筑美学</h3>
                 <p>探索福州大学建筑的美学价值和设计理念。</p>
+                <p>类型: 教师指导学生研究</p>
                 <button onclick="joinProject('福大建筑美学', './images/project2.jpg', '探索福州大学建筑的美学价值和设计理念。', '教师指导学生研究', this)">加入项目</button>
+            </div>
+            <div class="project-item" id="project3">
+                <img src="./images/project3.jpg" alt="项目图片">
+                <h3>风景园林规划实训</h3>
+                <p>风景园林规划的实践和理论结合。</p>
+                <p>类型: 教师指导学生研究</p>
+                <button onclick="joinProject('风景园林规划实训', './images/project3.jpg', '风景园林规划的实践和理论结合。', '教师指导学生研究', this)">加入项目</button>
+            </div>
+            <div class="project-item" id="project4">
+                <img src="./images/project4.jpg" alt="项目图片">
+                <h3>孙子兵法实操</h3>
+                <p>通过实战模拟，学习和应用孙子兵法。</p>
+                <p>类型: 学生自主研究</p>
+                <button onclick="joinProject('孙子兵法实操', './images/project4.jpg', '通过实战模拟，学习和应用孙子兵法。', '学生自主研究', this)">加入项目</button>
+            </div>
+            <div class="project-item" id="project5">
+                <img src="./images/project5.jpg" alt="项目图片">
+                <h3>嵌入式系统原理研究</h3>
+                <p>研究嵌入式系统的硬件和软件原理。</p>
+                <p>类型: 教师指导学生研究</p>
+                <button onclick="joinProject('嵌入式系统原理研究', './images/project5.jpg', '研究嵌入式系统的硬件和软件原理。', '教师指导学生研究', this)">加入项目</button>
+            </div>
+            <div class="project-item" id="project6">
+                <img src="./images/project6.jpg" alt="项目图片">
+                <h3>企鹅生活习性观察</h3>
+                <p>通过观察企鹅的生活习性，进行数据分析。</p>
+                <p>类型: 学生自主研究</p>
+                <button onclick="joinProject('企鹅生活习性观察', './images/project6.jpg', '通过观察企鹅的生活习性，进行数据分析。', '学生自主研究', this)">加入项目</button>
             </div>
         </div>
     </main>
@@ -71,6 +173,27 @@
             .catch(err => {
                 console.error('加入项目出错:', err);
                 alert('加入项目出错');
+            });
+        }
+
+        function filterProjects() {
+            const searchTerm = document.getElementById('search-bar').value.toLowerCase();
+            const filterType = document.getElementById('filter-type').value;
+            const projectItems = document.querySelectorAll('.project-item');
+
+            projectItems.forEach(item => {
+                const projectName = item.querySelector('h3').textContent.toLowerCase();
+                const projectDescription = item.querySelector('p').textContent.toLowerCase();
+                const projectType = item.querySelector('p:nth-of-type(2)').textContent.toLowerCase();
+
+                const matchesSearch = projectName.includes(searchTerm) || projectDescription.includes(searchTerm);
+                const matchesType = filterType ? projectType.includes(filterType.toLowerCase()) : true;
+
+                if (matchesSearch && matchesType) {
+                    item.style.display = ''; // 显示匹配的项目
+                } else {
+                    item.style.display = 'none'; // 隐藏不匹配的项目
+                }
             });
         }
     </script>

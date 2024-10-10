@@ -12,7 +12,7 @@
         <nav>
             <ul>
                 <li><a href="main.html">首页</a></li>
-                <li><a href="projects.html">项目</a></li> <!-- 新增项目链接 -->
+                <li><a href="projects.html">项目</a></li>
                 <li><a href="friends.html">好友</a></li>
                 <li><a href="mine.html">我的</a></li>
             </ul>
@@ -22,9 +22,12 @@
     <main>
         <section id="profile">
             <h2>我的资料</h2>
+            <img id="profile-avatar" alt="头像" style="max-width: 100px; border-radius: 50%;">
             <p id="username">昵称: </p>
             <p id="email">邮箱: </p>
-            <button id="edit-profile-button" onclick="location.href='edit-profile.html'">编辑资料</button> <!-- 新增编辑资料按钮 -->
+            <p id="major">专业: </p>
+            <p id="bio">个人简介: </p>
+            <button id="edit-profile-button" onclick="location.href='edit-profile.html'">编辑资料</button>
         </section>
     </main>
 
@@ -47,8 +50,11 @@
             return response.json();
         })
         .then(data => {
+            document.getElementById('profile-avatar').src = data.avatar; // 用户头像
             document.getElementById('username').textContent = `昵称: ${data.username}`;
             document.getElementById('email').textContent = `邮箱: ${data.email}`;
+            document.getElementById('major').textContent = `专业: ${data.major}`;
+            document.getElementById('bio').textContent = `个人简介: ${data.bio}`;
         })
         .catch(err => {
             console.error('获取用户资料失败:', err);

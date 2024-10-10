@@ -39,6 +39,29 @@
             padding: 10px 0;
         }
 
+        .message-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+
+        .bubble {
+            padding: 10px;
+            border-radius: 15px;
+            max-width: 80%;
+            margin: 5px;
+        }
+
+        .sent {
+            background-color: #dcf8c6;
+            align-self: flex-end; /* 右对齐 */
+        }
+
+        .received {
+            background-color: #f1f0f0;
+            align-self: flex-start; /* 左对齐 */
+        }
+
         #message-input {
             display: flex;
             margin-top: 10px;
@@ -78,13 +101,21 @@
     <main>
         <div id="chat-container">
             <div id="chat-header">
-                <!-- 通过 JavaScript 动态加载头像图片 -->
                 <img src="images/avatar1.jpg" alt="好友头像" id="friend-avatar">
                 <h3 id="friend-name">好友</h3>
             </div>
 
             <div id="chat-box">
                 <!-- 这里会显示聊天记录 -->
+                <div class="message-container">
+                    <div class="bubble received">你好！今天过得怎么样？</div>
+                </div>
+                <div class="message-container">
+                    <div class="bubble received">我刚刚完成了一项有趣的项目。</div>
+                </div>
+                <div class="message-container">
+                    <div class="bubble received">你有什么新计划吗？</div>
+                </div>
             </div>
 
             <div id="message-input">
@@ -102,6 +133,7 @@
         // 获取好友名字并显示在顶部
         const params = new URLSearchParams(window.location.search);
         const friendName = params.get('friend');
+
         if (friendName) {
             document.getElementById('friend-name').textContent = friendName;
 
@@ -118,12 +150,21 @@
             if (message.trim()) {
                 // 模拟发送消息
                 const chatBox = document.getElementById('chat-box');
-                const newMessage = document.createElement('div');
-                newMessage.textContent = "我: " + message;
-                chatBox.appendChild(newMessage);
+                const messageContainer = document.createElement('div');
+                messageContainer.classList.add('message-container');
+
+                const messageBubble = document.createElement('div');
+                messageBubble.classList.add('bubble', 'sent');
+                messageBubble.textContent = "我: " + message;
+
+                messageContainer.appendChild(messageBubble);
+                chatBox.appendChild(messageContainer);
 
                 // 清空输入框
                 document.getElementById('chat-message').value = '';
+
+                // 滚动到最新消息
+                chatBox.scrollTop = chatBox.scrollHeight;
             }
         }
     </script>
